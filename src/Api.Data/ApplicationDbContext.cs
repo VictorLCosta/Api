@@ -1,3 +1,4 @@
+using Api.Data.Mapping;
 using Api.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ namespace Api.Data
 
         public DbSet<User> Users { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder mb)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(mb);
+
+            mb.ApplyConfiguration(new UserMap());
         }
     }
 }
