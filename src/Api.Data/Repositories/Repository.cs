@@ -38,14 +38,28 @@ namespace Api.Data.Repositories
             return _context.Set<T>().Where(predicate);
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.Set<T>().ToListAsync();
+            }
+            catch (System.Exception e)
+            {
+                throw e;
+            }
         }
 
-        public Task<T> GetAsync(Guid id)
+        public async Task<T> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
+            }
+            catch (System.Exception e)
+            {
+                throw e;
+            }
         }
 
         public async Task<bool> ExistAsync(Guid id)
