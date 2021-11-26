@@ -48,6 +48,11 @@ namespace Api.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public async Task<bool> ExistAsync(Guid id)
+        {
+            return await _context.Set<T>().AnyAsync(x => x.Id.Equals(id));
+        }
+
         public async Task<bool> Remove(Guid id)
         {
             try
