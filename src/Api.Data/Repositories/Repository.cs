@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Api.Data.Interfaces;
 using Api.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Data.Repositories
 {
@@ -29,7 +33,12 @@ namespace Api.Data.Repositories
             return entity;
         }
 
-        public Task<System.Collections.Generic.IEnumerable<T>> GetAllAsync()
+        public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().Where(predicate);
+        }
+
+        public Task<IEnumerable<T>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
@@ -41,12 +50,36 @@ namespace Api.Data.Repositories
 
         public Task<bool> Remove(T entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
 
-        public Task<T> Update(T entity)
+        public async Task<T> Update(T entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == entity.Id);
+                if(result == null)
+                    return null;
+
+                entity.UpdatedAt = DateTime.UtcNow;
+                entity.CreatedAt = result.CreatedAt;
+
+                _context.Entry(entity).State = EntityState.Modified;
+            }
+            catch (System.Exception e)
+            {
+                throw e;
+            }
+
+            return entity;
         }
     }
 }
