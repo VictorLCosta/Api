@@ -48,16 +48,20 @@ namespace Api.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> Remove(T entity)
+        public async Task<bool> Remove(Guid id)
         {
             try
             {
-                throw new NotImplementedException();
+                var entity = await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
+                if(entity == null)
+                    return false;
+
+                var result = _context.Set<T>().Remove(entity);
+                return true;
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                
-                throw;
+                throw e;
             }
         }
 
