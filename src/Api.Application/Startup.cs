@@ -31,8 +31,14 @@ namespace application
             services.AddServiceDependecies(_config);
 
             services.AddControllers();
+            services.AddApiVersioning(cfg =>{
+                cfg.ReportApiVersions = true;
+                cfg.AssumeDefaultVersionWhenUnspecified = true;
+                cfg.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion (1, 0);
+            });
             services.AddSwaggerGen(c =>
             {
+                c.ResolveConflictingActions(apiDescription => apiDescription.First());
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "application", Version = "v1" });
             });
         }
@@ -51,7 +57,10 @@ namespace application
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "application v1"));
+                app.UseSwaggerUI(c => {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "application v1");
+                    c.RoutePrefix = "swagger";
+                });
             }
 
             app.UseRouting();
