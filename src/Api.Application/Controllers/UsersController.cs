@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Api.Domain.Entities;
 using Api.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Application.Controllers
@@ -17,6 +18,7 @@ namespace Api.Application.Controllers
         }
 
         [HttpGet]
+        [Authorize("Bearer")]
         public async Task<IActionResult> GetAll()
         {
             try

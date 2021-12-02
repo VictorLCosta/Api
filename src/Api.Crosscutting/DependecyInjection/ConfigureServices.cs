@@ -1,8 +1,12 @@
+using System.Text;
 using Api.Service.Interfaces;
 using Api.Service.PasswordHasher;
 using Api.Service.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Crosscutting.DependecyInjection
 {
@@ -12,6 +16,31 @@ namespace Api.Crosscutting.DependecyInjection
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<ITokenService, TokenService>();
+
+            var key = Encoding.ASCII.GetBytes(config.GetValue<string>("Secret"));
+
+            services.AddAuthentication(opt => {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x => {
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters 
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+            });
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
 
             services.AddTransient<Hasher, Hasher>();
 

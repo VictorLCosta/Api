@@ -36,14 +36,16 @@ namespace Api.Service.Services
 
         public async Task<User> Post(User user)
         {
-            user.PasswordHash = await _hasher.HashPassword(user.ProvidedPassword);
+            user.PasswordSalt = _hasher.CreateSalt();
+            user.PasswordHash = await _hasher.HashPassword(user.ProvidedPassword, user.PasswordSalt);
 
             return await _unit.Users.AddAsync(user);
         }
 
         public async Task<User> Put(User user)
         {
-            user.PasswordHash = await _hasher.HashPassword(user.ProvidedPassword);
+            user.PasswordSalt = _hasher.CreateSalt();
+            user.PasswordHash = await _hasher.HashPassword(user.ProvidedPassword, user.PasswordSalt);
 
             return await _unit.Users.Update(user);
         }
