@@ -26,15 +26,20 @@ namespace application
 
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddDataDependecies(_config);
             services.AddServiceDependecies(_config);
 
             services.AddControllers();
-            services.AddApiVersioning(cfg =>{
+            services.AddApiVersioning(cfg =>
+            {
                 cfg.ReportApiVersions = true;
                 cfg.AssumeDefaultVersionWhenUnspecified = true;
-                cfg.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion (1, 0);
+                cfg.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
             });
             services.AddSwaggerGen(c =>
             {
@@ -45,7 +50,8 @@ namespace application
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.Use(async (context, next) => {
+            app.Use(async (context, next) =>
+            {
                 await next.Invoke();
 
                 var unitOfWork = (IUow)context.RequestServices.GetService(typeof(IUow));
@@ -57,7 +63,8 @@ namespace application
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => {
+                app.UseSwaggerUI(c =>
+                {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "application v1");
                     c.RoutePrefix = "swagger";
                 });

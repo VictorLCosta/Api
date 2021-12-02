@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
-using Api.Data.Interfaces;
+using Api.Data.Transactions;
+using Api.Domain.DTO.User;
 using Api.Domain.Entities;
 using Api.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -8,19 +9,19 @@ namespace Api.Service.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUow _unit;
 
-        public AccountService(IUserRepository userRepository)
+        public AccountService(IUow unit)
         {
-            _userRepository = userRepository;
+            _unit = unit;
         }
 
-        public async Task<object> FindByLogin(User user)
+        public async Task<object> FindByLogin(LoginDto model)
         {
             User baseUser = new();
-            if(user != null && string.IsNullOrEmpty(user.Email))
+            if(model != null && string.IsNullOrEmpty(model.Email))
             {
-                baseUser = await _userRepository.FindBy(x => x.Email.Equals(user.Email)).FirstOrDefaultAsync();
+                baseUser = await _unit.Users.FindBy(x => x.Email.Equals(model.Email)).FirstOrDefaultAsync();
                 if(baseUser == null)
                 {
                     return null;

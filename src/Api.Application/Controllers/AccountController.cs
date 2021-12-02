@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Api.Domain.DTO.User;
 using Api.Domain.Entities;
 using Api.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,9 @@ namespace Api.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Login(User user)
+        public async Task<object> Login(LoginDto model)
         {
-            if(user == null)
+            if(model == null)
                 return BadRequest();
 
             if(!ModelState.IsValid)
@@ -28,7 +29,7 @@ namespace Api.Application.Controllers
 
             try
             {
-                var result = await _accountService.FindByLogin(user);
+                var result = await _accountService.FindByLogin(model);
                 if(result != null)
                     return result;
 
