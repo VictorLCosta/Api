@@ -11,6 +11,7 @@ namespace Api.Crosscutting.DependecyInjection
         public static IServiceCollection AddServiceDependecies(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAccountService, AccountService>();
 
             services.AddTransient<Hasher, Hasher>();
 
