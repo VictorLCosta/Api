@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Api.Data.Transactions;
-using Api.Domain.DTO.User;
+using Api.Domain.DTO.Account;
 using Api.Domain.Entities;
 using Api.Service.Interfaces;
 using Api.Service.PasswordHasher;
