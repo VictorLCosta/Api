@@ -2,20 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Api.Data.Transactions;
+using Api.Domain.DTO.User;
 using Api.Domain.Entities;
 using Api.Service.Interfaces;
 using Api.Service.PasswordHasher;
+using AutoMapper;
 
 namespace Api.Service.Services
 {
     public class UserService : IUserService
     {
         private readonly IUow _unit;
+        private readonly IMapper _mapper;
         private readonly Hasher _hasher;
 
-        public UserService(IUow unit, Hasher hasher)
+        public UserService(IUow unit, IMapper mapper, Hasher hasher)
         {
             _unit = unit;
+            _mapper = mapper;
             _hasher = hasher;
         }
 
@@ -24,30 +28,36 @@ namespace Api.Service.Services
             return await _unit.Users.Remove(id);
         }
 
-        public async Task<User> Get(Guid id)
+        public async Task<UserDto> Get(Guid id)
         {
-            return await _unit.Users.GetAsync(id);
+            var user = await _unit.Users.GetAsync(id);
+            return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<UserDto>> GetAll()
         {
-            return await _unit.Users.GetAllAsync();
+            var list = await _unit.Users.GetAllAsync();
+            return _mapper.Map<IEnumerable<UserDto>>(list);
         }
 
-        public async Task<User> Post(User user)
+        public async Task<CreateUserResultDto> Post(UserDto model)
         {
+            var user = _mapper.Map<User>(model);
+
             user.PasswordSalt = _hasher.CreateSalt();
-            user.PasswordHash = await _hasher.HashPassword(user.ProvidedPassword, user.PasswordSalt);
+            user.PasswordHash = await _hasher.HashPassword(model.Password, user.PasswordSalt);
 
-            return await _unit.Users.AddAsync(user);
+            return _mapper.Map<CreateUserResultDto>(await _unit.Users.AddAsync(user));
         }
 
-        public async Task<User> Put(User user)
+        public async Task<UpdateUserResultDto> Put(UserDto model)
         {
-            user.PasswordSalt = _hasher.CreateSalt();
-            user.PasswordHash = await _hasher.HashPassword(user.ProvidedPassword, user.PasswordSalt);
+            var user = _mapper.Map<User>(model);
 
-            return await _unit.Users.Update(user);
+            user.PasswordSalt = _hasher.CreateSalt();
+            user.PasswordHash = await _hasher.HashPassword(model.Password, user.PasswordSalt);
+
+            return _mapper.Map<UpdateUserResultDto>(await _unit.Users.Update(user));
         }
     }
 }
