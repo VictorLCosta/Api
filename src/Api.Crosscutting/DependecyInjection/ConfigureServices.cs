@@ -1,4 +1,5 @@
 using System.Text;
+using Api.Crosscutting.AutoMapper;
 using Api.Service.Interfaces;
 using Api.Service.PasswordHasher;
 using Api.Service.Services;
@@ -41,6 +42,8 @@ namespace Api.Crosscutting.DependecyInjection
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
                     .RequireAuthenticatedUser().Build());
             });
+
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
             services.AddTransient<Hasher, Hasher>();
 
