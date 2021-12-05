@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Api.Domain.DTO.User;
 using Api.Domain.Entities;
 using Api.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -51,7 +52,7 @@ namespace Api.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(User model)
+        public async Task<IActionResult> Post(UserDto model)
         {
             if(!ModelState.IsValid)
             {
@@ -74,7 +75,7 @@ namespace Api.Application.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(User model)
+        public async Task<IActionResult> Put(UserDto model)
         {
             if(!ModelState.IsValid)
             {
