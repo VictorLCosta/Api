@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Api.Domain.Attributes;
 
 namespace Api.Domain.DTO.User
 {
@@ -23,8 +24,7 @@ namespace Api.Domain.DTO.User
         [EmailAddress(ErrorMessage = "Informe um email válido")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Por favor, informe a senha")]
-        [StringLength(20, MinimumLength = 8, ErrorMessage = "Por favor, a senha deve ter entre 8 e 20 caracteres")]
+        [Password(8, 20, true, true, true, false)]
         public string Password { get; set; }
     }
 }
