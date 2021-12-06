@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Api.Data;
 using Api.Data.Repositories;
 using Api.Domain.Entities;
+using Bogus;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -23,11 +24,13 @@ namespace Api.Test.Data
         {
             using (var context = _serviceProvider.GetService<ApplicationDbContext>())
             {
+                Faker faker = new();
+
                 UserRepository repository = new(context);
                 User user = new() 
                 {
-                    Email = "teste@mail.com",
-                    Name = "TestName",
+                    Email = faker.Person.Email,
+                    Name = faker.Person.FullName,
                 };
 
                 var result = await repository.AddAsync(user);
