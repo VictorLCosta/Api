@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Api.Domain.DTO.User;
 using Bogus;
 
-namespace Api.Test.Services
+namespace Api.Test.Services.UserService
 {
     public class UserTest
     {
@@ -12,6 +12,7 @@ namespace Api.Test.Services
         public string Email { get; set; }
         public string UpdatedName { get; set; }
         public string UpdatedEmail { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public List<UserDto> UserDtoList { get; set; } = new List<UserDto>();
         public UserDto UserDto { get; set; } = new UserDto();
@@ -27,6 +28,7 @@ namespace Api.Test.Services
             Email = faker.Person.Email;
             UpdatedName = faker.Person.FullName;
             UpdatedEmail = faker.Person.Email;
+            CreatedAt = DateTime.UtcNow;
 
             for (int i = 0; i < 10; i++)
             {
@@ -41,11 +43,11 @@ namespace Api.Test.Services
 
             UserDto = new UserDto() 
             {
-                Id = Guid.NewGuid(),
-                Name = faker.Person.FullName,
-                Email = faker.Person.Email,
+                Id = Id,
+                Name = Name,
+                Email = Email,
                 Password = faker.Random.AlphaNumeric(9),
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = CreatedAt
             };
 
             CreateUserResult = new CreateUserResultDto() 
