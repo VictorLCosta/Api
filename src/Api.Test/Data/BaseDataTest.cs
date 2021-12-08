@@ -3,11 +3,11 @@ using Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Api.Test
+namespace Api.Test.Data
 {
-    public abstract class BaseTest
+    public abstract class BaseDataTest
     {
-        public BaseTest()
+        public BaseDataTest()
         {
             
         }

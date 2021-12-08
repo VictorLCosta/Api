@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Api.Test.Data
 {
-    public class UserCrudTest : BaseTest, IClassFixture<DbTest>
+    public class UserCrudTest : BaseDataTest, IClassFixture<DbTest>
     {
         private ServiceProvider _serviceProvider;
 
