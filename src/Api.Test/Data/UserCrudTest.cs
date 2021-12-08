@@ -36,8 +36,8 @@ namespace Api.Test.Data
                 var result = await repository.AddAsync(user);
 
                 Assert.NotNull(result);
-                Assert.Equal("teste@mail.com", result.Email);
-                Assert.Equal("TestName", result.Name);
+                Assert.Equal(user.Email, result.Email);
+                Assert.Equal(user.Name, result.Name);
                 Assert.False(result.Id == Guid.Empty);
 
             }
