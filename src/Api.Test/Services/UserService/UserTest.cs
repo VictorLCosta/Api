@@ -61,8 +61,8 @@ namespace Api.Test.Services.UserService
             UpdateUserResult = new UpdateUserResultDto() 
             {
                 Id = Id,
-                Name = Name,
-                Email = Email,
+                Name = UpdatedName,
+                Email = UpdatedEmail,
                 UpdatedAt = DateTime.UtcNow
             };
 
