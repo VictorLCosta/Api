@@ -18,10 +18,12 @@ namespace application
     public class Startup
     {
         private readonly IConfiguration _config;
+        public IWebHostEnvironment Environment { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             _config = configuration;
+            Environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
