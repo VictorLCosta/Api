@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Api.Domain.DTO.User;
 using Bogus;
@@ -67,6 +69,30 @@ namespace Api.Test.Integration.User
 
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
             Assert.NotNull(responseData);
+        }
+
+        [Fact]
+        public async Task IsPossibleUpdateUser()
+        {
+            Faker faker = new();
+
+            var userDto = new UserDto()
+            {
+                Id = Guid.Parse("bfecce56-0241-49e1-926c-90afa4940cd9"),
+                Name = faker.Person.FullName,
+                Email = faker.Person.Email,
+                Password = faker.Internet.Password(8)
+            };
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(userDto), Encoding.UTF8, "application/json");
+
+            var response = await Client.PutAsync($"{HostApi}users", stringContent);
+            var responseObj = await response.Content.ReadAsStringAsync();
+            var responseData = JsonConvert.DeserializeObject<UpdateUserResultDto>(responseObj);
+
+            Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+            Assert.Equal(responseData.Email, userDto.Email);
+            Assert.Equal(responseData.Name, userDto.Name);
         }
 
         [Fact]
