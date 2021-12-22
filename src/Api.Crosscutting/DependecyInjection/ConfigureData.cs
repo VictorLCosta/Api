@@ -1,3 +1,4 @@
+using System;
 using Api.Data;
 using Api.Data.Interfaces;
 using Api.Data.Repositories;
@@ -12,7 +13,7 @@ namespace Api.Crosscutting.DependecyInjection
     {
         public static IServiceCollection AddDataDependecies(this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("DefaultConnection");
+            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
             var version = ServerVersion.AutoDetect(connectionString);
 
             services.AddDbContext<ApplicationDbContext>(opt => {

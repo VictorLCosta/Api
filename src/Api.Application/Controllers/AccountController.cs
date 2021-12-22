@@ -33,7 +33,7 @@ namespace Api.Application.Controllers
                 if(result != null)
                     return result;
 
-                return NotFound();
+                return NotFound("Usuário não encontrado");
             }
             catch (ArgumentException e)
             {

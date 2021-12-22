@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Api.Crosscutting.AutoMapper;
 using Api.Service.Interfaces;
@@ -5,21 +6,28 @@ using Api.Service.PasswordHasher;
 using Api.Service.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Crosscutting.DependecyInjection
 {
     public static class ConfigureServices
     {
-        public static IServiceCollection AddServiceDependecies(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddServiceDependecies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ITokenService, TokenService>();
 
-            var key = Encoding.ASCII.GetBytes(config.GetValue<string>("Secret"));
+            var key = new byte[] {};
+
+            if(env.IsEnvironment("Testing"))
+                key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("DB_CONNECTION"));
+            else
+                key = Encoding.ASCII.GetBytes(config.GetValue<string>("Secret"));
 
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

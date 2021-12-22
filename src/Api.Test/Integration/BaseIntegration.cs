@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -51,7 +52,7 @@ namespace Api.Test.Integration
                 Password = ""
             };
 
-            var resultLogin = await PostJsonAsync(loginDto, $"{HostApi}login", Client);
+            var resultLogin = await PostJsonAsync(loginDto, $"{HostApi}v1.0/account/login", Client);
             var jsonLogin = await resultLogin.Content.ReadAsStringAsync();
             var objLogin = JsonConvert.DeserializeObject<LoginResponseDto>(jsonLogin);
 
