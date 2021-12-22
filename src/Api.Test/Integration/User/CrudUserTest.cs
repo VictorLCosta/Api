@@ -68,5 +68,17 @@ namespace Api.Test.Integration.User
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
             Assert.NotNull(responseData);
         }
+
+        [Fact]
+        public async Task IsPossibleDeleteUser()
+        {
+            var id = "2bce5034-a82a-471d-a108-4c1007803e45";
+
+            var response = await Client.DeleteAsync($"{HostApi}users/{id}");
+            var responseObj = await response.Content.ReadAsStringAsync();
+
+            Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+            Assert.True(Boolean.Parse(responseObj));
+        }
     }
 }
