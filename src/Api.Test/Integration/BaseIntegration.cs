@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -27,9 +28,10 @@ namespace Api.Test.Integration
 
         public BaseIntegration()
         {
-            HostApi = "http://localhost:5000/api/";
+            HostApi = "http://localhost:5000/api/v1/";
             var builder = new WebHostBuilder()
                 .UseEnvironment("Testing")
+                .UseKestrel(opt => opt.Listen(IPAddress.Any, 80))
                 .UseStartup<Startup>();
 
             var server = new TestServer(builder);
@@ -40,7 +42,7 @@ namespace Api.Test.Integration
             Mapper = new AutoMapperFixture().GetMapper();
 
             Client = server.CreateClient();
-
+            Client.BaseAddress = new Uri("http://localhost:5000");
 
         }
 
@@ -48,11 +50,11 @@ namespace Api.Test.Integration
         {
             var loginDto = new LoginDto()
             {
-                Email = "mfrinfo@mail.com",
-                Password = ""
+                Email = "victorlc2019@outlook.com",
+                Password = "Icaronon9"
             };
 
-            var resultLogin = await PostJsonAsync(loginDto, $"{HostApi}v1.0/account/login", Client);
+            var resultLogin = await PostJsonAsync(loginDto, $"{HostApi}account", Client);
             var jsonLogin = await resultLogin.Content.ReadAsStringAsync();
             var objLogin = JsonConvert.DeserializeObject<LoginResponseDto>(jsonLogin);
 

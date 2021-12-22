@@ -38,7 +38,7 @@ namespace application
                 Environment.SetEnvironmentVariable("DB_CONNECTION", "Server=localhost;Database=api_Integration;Uid=root;Pwd=Icaronon9@;");
             }
 
-            services.AddDataDependecies(_config);
+            services.AddDataDependecies(_config, _environment);
             services.AddServiceDependecies(_config, _environment);
 
             services.AddControllers();
