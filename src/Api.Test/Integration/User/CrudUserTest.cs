@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Api.Domain.DTO.User;
@@ -8,7 +10,7 @@ using Xunit;
 
 namespace Api.Test.Integration.User
 {
-    public class PostUserTest : BaseIntegration
+    public class CrudUserTest : BaseIntegration
     {
         private string _name { get; set; }
         private string _email { get; set; }
@@ -37,6 +39,19 @@ namespace Api.Test.Integration.User
             Assert.Equal(responseData.Name, _name);
             Assert.Equal(responseData.Email, _email);
             Assert.True(responseData.Id != default(Guid));
+        }
+
+        [Fact]
+        public async Task IsPossibleGetAllUsers()
+        {
+            await AddTokenAsync();
+
+            var response = await Client.GetAsync($"{HostApi}users");
+            var responseObj = await response.Content.ReadAsStringAsync();
+            var responseData = JsonConvert.DeserializeObject<IEnumerable<UserDto>>(responseObj);
+
+            Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+            Assert.True(responseData.Count() > 0);
         }
     }
 }
