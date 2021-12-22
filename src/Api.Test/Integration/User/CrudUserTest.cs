@@ -16,9 +16,11 @@ namespace Api.Test.Integration.User
         private string _email { get; set; }
         private string _password { get; set; }
 
+
         [Fact]
         public async Task IsPossibleCreateUser()
         {
+
             Faker faker = new();
             _name = faker.Person.FullName;
             _email = faker.Person.Email;
@@ -52,6 +54,19 @@ namespace Api.Test.Integration.User
 
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
             Assert.True(responseData.Count() > 0);
+        }
+
+        [Fact]
+        public async Task IsPossibleGetUser()
+        {
+            var id = "2bce5034-a82a-471d-a108-4c1007803e45";
+
+            var response = await Client.GetAsync($"{HostApi}users/{id}");
+            var responseObj = await response.Content.ReadAsStringAsync();
+            var responseData = JsonConvert.DeserializeObject<UserDto>(responseObj);
+
+            Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+            Assert.NotNull(responseData);
         }
     }
 }

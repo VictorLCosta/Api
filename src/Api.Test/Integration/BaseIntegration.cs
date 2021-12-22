@@ -50,7 +50,7 @@ namespace Api.Test.Integration
         {
             var loginDto = new LoginDto()
             {
-                Email = "victorlc2019@outlook.com",
+                Email = "Chester_Flatley@gmail.com",
                 Password = "Icaronon9"
             };
 
