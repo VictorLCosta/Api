@@ -22,7 +22,7 @@ namespace Api.Service.Services
         public string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var secret = Encoding.ASCII.GetBytes(_config["Secret"]);
+            var secret = Encoding.ASCII.GetBytes("r75^zh{[]xst*H^T*'j-;\"Ssmvp;`ENLrL-XZ[&X)eUrYS2Um)Zy;b![.1\"e/4d");;
 
             var key = new SymmetricSecurityKey(secret);
 

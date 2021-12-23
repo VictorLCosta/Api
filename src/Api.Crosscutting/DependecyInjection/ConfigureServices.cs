@@ -22,12 +22,7 @@ namespace Api.Crosscutting.DependecyInjection
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ITokenService, TokenService>();
 
-            var key = new byte[] {};
-
-            if(env.IsEnvironment("Testing"))
-                key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("DB_CONNECTION"));
-            else
-                key = Encoding.ASCII.GetBytes(config.GetValue<string>("Secret"));
+            var key = Encoding.ASCII.GetBytes("r75^zh{[]xst*H^T*'j-;\"Ssmvp;`ENLrL-XZ[&X)eUrYS2Um)Zy;b![.1\"e/4d");
 
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

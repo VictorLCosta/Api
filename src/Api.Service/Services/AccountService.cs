@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Api.Data.Transactions;
 using Api.Domain.DTO.Account;
@@ -35,8 +36,10 @@ namespace Api.Service.Services
                     return null;
             
                 return new {
-                    user = baseUser,
-                    token = _tokenService.GenerateToken(baseUser)
+                    userName = baseUser.Name,
+                    authenticated = true,
+                    created = DateTime.UtcNow,
+                    accessToken = _tokenService.GenerateToken(baseUser)
                 };
             }
 

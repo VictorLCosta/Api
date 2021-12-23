@@ -17,7 +17,6 @@ namespace Api.Crosscutting.AutoMapper
             CreateMap<UpdateUserResultDto, User>()
                 .ReverseMap();
 
-            
         }
     }
 }

@@ -50,8 +50,9 @@ namespace Api.Test.Integration
         {
             var loginDto = new LoginDto()
             {
-                Email = "Chester_Flatley@gmail.com",
-                Password = "Icaronon9"
+                // Name = "Kelly Hackett",
+                Email = "Kelly49@yahoo.com",
+                Password = "YL5qazrNoo"
             };
 
             var resultLogin = await PostJsonAsync(loginDto, $"{HostApi}account", Client);
