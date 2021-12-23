@@ -8,6 +8,10 @@ namespace Api.Data.Mapping
     {
         public void Configure(EntityTypeBuilder<City> builder)
         {
+            builder
+                .Property(x => x.Name)
+                .HasColumnType("varchar(45)");
+
             builder.HasIndex(x => x.IbgeCode);
 
             builder

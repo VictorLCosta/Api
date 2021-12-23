@@ -9,6 +9,14 @@ namespace Api.Data.Mapping
         public void Configure(EntityTypeBuilder<State> builder)
         {
             builder
+                .Property(x => x.Name)
+                .HasColumnType("varchar(45)");
+
+            builder
+                .Property(x => x.UF)
+                .HasColumnType("char(2)");
+
+            builder
                 .HasIndex(x => x.UF)
                 .IsUnique();
         }

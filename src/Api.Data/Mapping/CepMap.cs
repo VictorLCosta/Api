@@ -8,6 +8,18 @@ namespace Api.Data.Mapping
     {
         public void Configure(EntityTypeBuilder<Cep> builder)
         {
+            builder
+                .Property(x => x.CEP)
+                .HasColumnType("varchar(10)");
+
+            builder
+                .Property(x => x.PublicPlace)
+                .HasColumnType("varchar(60)");
+
+            builder
+                .Property(x => x.Number)
+                .HasColumnType("varchar(10)");
+
             builder.HasIndex(x => x.CEP);
 
             builder
