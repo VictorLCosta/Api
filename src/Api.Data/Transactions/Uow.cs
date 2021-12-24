@@ -8,6 +8,13 @@ namespace Api.Data.Transactions
     {
         public IUserRepository Users { get; }
 
+        public ICepRepository Ceps { get; }
+
+        public ICityRepository Cities { get; }
+
+        public IStateRepository States { get; }
+
+
         private readonly ApplicationDbContext _context;
 
         public Uow(ApplicationDbContext context)
@@ -15,6 +22,9 @@ namespace Api.Data.Transactions
             _context = context;
 
             Users = new UserRepository(_context);
+            Ceps = new CepRepository(_context);
+            Cities = new CityRepository(_context);
+            States = new StateRepository(_context);
         }
 
         public async Task Commit()

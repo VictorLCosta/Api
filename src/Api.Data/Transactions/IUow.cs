@@ -8,6 +8,10 @@ namespace Api.Data.Transactions
     {
         IUserRepository Users { get; }
 
+        ICepRepository Ceps { get; }
+        ICityRepository Cities { get; }
+        IStateRepository States { get; }
+
         Task Commit();
     }
 }
