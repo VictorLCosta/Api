@@ -41,14 +41,20 @@ namespace Api.Service.Services
         {
             var cep = _mapper.Map<Cep>(model);
 
-            return _mapper.Map<CreateCepResultDto>(await _uow.Ceps.AddAsync(cep));
+            var result = await _uow.Ceps.AddAsync(cep);
+            await _uow.Commit();
+
+            return _mapper.Map<CreateCepResultDto>(result);
         }
 
         public async Task<UpdateCepResultDto> Put(UpdateCepDto model)
         {
             var cep = _mapper.Map<Cep>(model);
 
-            return _mapper.Map<UpdateCepResultDto>(await _uow.Ceps.Update(cep));
+            var result = await _uow.Ceps.Update(cep);
+            await _uow.Commit();
+
+            return _mapper.Map<UpdateCepResultDto>(result);
         }
     }
 }
