@@ -20,12 +20,9 @@ namespace Api.Test.Data
 
         public DbTest()
         {
-            var connectionString = $"Server=localhost;Database={dbName};Uid=root;Pwd=Icaronon9@;";
-            var version = ServerVersion.AutoDetect(connectionString);
-
             ServiceCollection services = new();
             services.AddDbContext<ApplicationDbContext>(x =>
-                x.UseMySql(connectionString, version),
+                x.UseInMemoryDatabase(dbName),
                 ServiceLifetime.Transient
             );
 
