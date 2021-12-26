@@ -21,7 +21,7 @@ namespace Api.Test.Services.UserService
 
         public UserTest()
         {
-            var faker = new Faker();
+            var faker = new Faker("pt_BR");
 
             Id = Guid.NewGuid();
             Name = faker.Person.FullName;
