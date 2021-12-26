@@ -21,7 +21,7 @@ namespace Api.Application.Controllers
         public async Task<IActionResult> Get(Guid id)
         {
             if(id == Guid.Empty)
-                return BadRequest();
+                return BadRequest("ID inválido");
 
             try
             {
