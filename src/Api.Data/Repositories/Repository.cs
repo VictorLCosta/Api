@@ -94,7 +94,8 @@ namespace Api.Data.Repositories
 
                 entity.UpdatedAt = DateTime.UtcNow;
                 entity.CreatedAt = result.CreatedAt;
-
+                
+                _context.Entry(result).State = EntityState.Detached;
                 _context.Entry(entity).State = EntityState.Modified;
             }
             catch (System.Exception e)

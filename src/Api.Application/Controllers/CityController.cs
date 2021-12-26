@@ -1,23 +1,23 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Domain.DTO.Cep;
+using Api.Domain.DTO.City;
 using Api.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Application.Controllers
 {
-    public class CepController : BaseApiController
+    public class CityController : BaseApiController
     {
-        private readonly ICepService _service;
+        private ICityService _cityService;
 
-        public CepController(ICepService service)
+        public CityController(ICityService cityService)
         {
-            _service = service;
+            _cityService = cityService;
         }
 
-        [HttpGet("{id}", Name = "GetCepWithId")]
+        [HttpGet("{id}", Name = "GetCityWithId")]
         [Authorize("Bearer")]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -26,7 +26,7 @@ namespace Api.Application.Controllers
 
             try
             {
-                var result = await _service.Get(id);
+                var result = await _cityService.Get(id);
                 if(result == null)
                     return NotFound();
 
@@ -38,20 +38,34 @@ namespace Api.Application.Controllers
             }
         }
 
-        [HttpGet("byCep/{cep}")]
+        [HttpGet("byIbge/{code}", Name = "GetCityWithIbge")]
         [Authorize("Bearer")]
-        public async Task<IActionResult> Get(string cep)
+        public async Task<IActionResult> GetByIbge(int code)
         {
-            if(string.IsNullOrEmpty(cep))
+            if(code < 0 || code > int.MaxValue)
                 return BadRequest();
 
             try
             {
-                var result = await _service.Get(cep);
+                var result = await _cityService.GetByIbge(code);
                 if(result == null)
                     return NotFound();
 
                 return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int) HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize("Bearer")]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                return Ok(await _cityService.GetAll());
             }
             catch (ArgumentException e)
             {
@@ -60,7 +74,7 @@ namespace Api.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(CreateCepDto model)
+        public async Task<IActionResult> Post(CreateCityDto model)
         {
             if(!ModelState.IsValid)
             {
@@ -69,9 +83,9 @@ namespace Api.Application.Controllers
 
             try
             {
-                var result = await _service.Post(model);
+                var result = await _cityService.Post(model);
                 if(result != null)
-                    return Created(new Uri(Url.Link("GetCepWithId", new { id = result.Id })), result);
+                    return Created(new Uri(Url.Link("GetCityWithId", new { id = result.Id })), result);
 
                 return BadRequest();
             }
@@ -83,7 +97,7 @@ namespace Api.Application.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(UpdateCepDto model)
+        public async Task<IActionResult> Put(UpdateCityDto model)
         {
             if(!ModelState.IsValid)
             {
@@ -92,7 +106,7 @@ namespace Api.Application.Controllers
 
             try
             {
-                var result = await _service.Put(model);
+                var result = await _cityService.Put(model);
                 if(result != null)
                     return Ok(result);
 
@@ -115,7 +129,7 @@ namespace Api.Application.Controllers
 
             try
             {
-                return Ok(await _service.Delete(id));
+                return Ok(await _cityService.Delete(id));
             }
             catch (System.Exception e)
             {
@@ -123,6 +137,5 @@ namespace Api.Application.Controllers
                 throw;
             }
         }
-
     }
 }
