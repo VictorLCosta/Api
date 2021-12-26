@@ -19,6 +19,9 @@ namespace Api.Crosscutting.DependecyInjection
         public static IServiceCollection AddServiceDependecies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
         {
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICepService, CepService>();
+            services.AddTransient<ICityService, CityService>();
+            services.AddTransient<IStateService, StateService>();
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ITokenService, TokenService>();
 
