@@ -68,6 +68,12 @@ namespace Api.Test.Integration
                 new StringContent(JsonConvert.SerializeObject(dataclass), Encoding.UTF8, "application/json"));
         }
 
+        public static async Task<HttpResponseMessage> PutJsonAsync(object dataclass, string uri, HttpClient client)
+        {
+            return await client.PutAsync(uri, 
+                new StringContent(JsonConvert.SerializeObject(dataclass), Encoding.UTF8, "application/json"));
+        }
+
         public void Dispose()
         {
             MyContext.Dispose();
