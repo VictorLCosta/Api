@@ -13,13 +13,9 @@ namespace Api.Crosscutting.DependecyInjection
 {
     public static class ConfigureData
     {
-        public static IServiceCollection AddDataDependecies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
+        public static IServiceCollection AddDataDependecies(this IServiceCollection services, IConfiguration config)
         {
-            string connectionString;
-            if(env.IsEnvironment("Testing"))
-                connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
-            else
-                connectionString = config.GetConnectionString("DefaultConnection");
+            string connectionString = config.GetConnectionString("DefaultConnection");
 
             var version = ServerVersion.AutoDetect(connectionString);
 

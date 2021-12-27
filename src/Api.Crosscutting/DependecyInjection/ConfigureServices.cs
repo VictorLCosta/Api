@@ -16,7 +16,7 @@ namespace Api.Crosscutting.DependecyInjection
 {
     public static class ConfigureServices
     {
-        public static IServiceCollection AddServiceDependecies(this IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
+        public static IServiceCollection AddServiceDependecies(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICepService, CepService>();
@@ -25,7 +25,7 @@ namespace Api.Crosscutting.DependecyInjection
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<ITokenService, TokenService>();
 
-            var key = Encoding.ASCII.GetBytes("r75^zh{[]xst*H^T*'j-;\"Ssmvp;`ENLrL-XZ[&X)eUrYS2Um)Zy;b![.1\"e/4d");
+            var key = Encoding.ASCII.GetBytes(config.GetValue<string>("Secret"));
 
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

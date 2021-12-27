@@ -18,12 +18,10 @@ namespace application
     public class Startup
     {
         private readonly IConfiguration _config;
-        public IWebHostEnvironment _environment { get; }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
             _config = configuration;
-            _environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -33,13 +31,8 @@ namespace application
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            if(_environment.IsEnvironment("Testing"))
-            {
-                Environment.SetEnvironmentVariable("DB_CONNECTION", "Server=localhost;Database=api_Integration;Uid=root;Pwd=Icaronon9@;");
-            }
-
-            services.AddDataDependecies(_config, _environment);
-            services.AddServiceDependecies(_config, _environment);
+            services.AddDataDependecies(_config);
+            services.AddServiceDependecies(_config);
 
             services.AddControllers();
             services.AddApiVersioning(cfg =>
